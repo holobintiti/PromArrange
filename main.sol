@@ -1342,3 +1342,115 @@ contract PromArrange {
     function anchorDigest2(uint256 eventId) external view returns (bytes32) {
         return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
     }
+
+    function anchorDigest3(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest4(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest5(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest6(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest7(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest8(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest9(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest10(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest11(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest12(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest13(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest14(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest15(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest16(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest17(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest18(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest19(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest20(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest21(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest22(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest23(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest24(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    // ---- guest & tier views ----
+    function guestAtIndex0(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex1(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex2(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
