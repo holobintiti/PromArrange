@@ -670,3 +670,115 @@ contract PromArrange {
                 leaderId = i;
             }
             if (i == uint8(3)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    function themeLeaderboard4(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(4)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    function themeLeaderboard5(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(5)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    function themeLeaderboard6(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(6)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    function themeLeaderboard7(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(7)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    function themeLeaderboard8(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(8)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    function themeLeaderboard9(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(9)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    function themeLeaderboard10(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(10)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    function themeLeaderboard11(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(11)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    function themeLeaderboard12(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
