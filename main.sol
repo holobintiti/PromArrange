@@ -222,3 +222,115 @@ contract PromArrange {
     struct BudgetLineEntry {
         uint8 category;
         uint256 ceilingWei;
+        uint256 spentWei;
+        bool closed;
+    }
+
+    mapping(uint256 => PromEvent) public events;
+    mapping(uint256 => mapping(uint8 => TicketTier)) public tiers;
+    mapping(uint256 => mapping(address => RsvpRecord)) public rsvps;
+    mapping(uint256 => address[]) public guestList;
+    mapping(uint256 => mapping(uint8 => VenueSlot)) public venueSlots;
+    mapping(uint256 => address[]) public chaperones;
+    mapping(uint256 => mapping(address => bool)) public isChaperone;
+    mapping(uint256 => mapping(uint8 => ThemeOptionEntry)) public themeOptions;
+    mapping(uint256 => mapping(uint256 => PlaylistEntry)) public playlist;
+    mapping(uint256 => mapping(uint256 => CourtNominee)) public courtNominees;
+    mapping(uint256 => mapping(address => uint256)) public nomineeIdByAddress;
+    mapping(uint256 => mapping(uint256 => SponsorPledge)) public sponsorPledges;
+    mapping(uint256 => mapping(uint256 => BudgetLineEntry)) public budgetLines;
+    mapping(uint256 => mapping(address => mapping(uint8 => bool))) public themeVotes;
+    mapping(uint256 => mapping(uint256 => mapping(address => bool))) public courtVotes;
+
+    modifier nonReentrant() {
+        if (_gate == 2) revert PA_Reentrant();
+        _gate = 2;
+        _;
+        _gate = 1;
+    }
+
+    modifier onlyCurator() {
+        if (msg.sender != curator) revert PA_NotCurator(msg.sender);
+        _;
+    }
+
+    modifier notFrozen() {
+        if (deskFrozen) revert PA_DeskFrozen();
+        _;
+    }
+
+    modifier eventExists(uint256 eventId) {
+        if (events[eventId].host == address(0)) revert PA_EventMissing(eventId);
+        _;
+    }
+
+    modifier eventOpen(uint256 eventId) {
+        if (events[eventId].isSealed) revert PA_EventSealed(eventId);
+        _;
+    }
+
+    constructor() {
+        themeOracle = 0xCfa7C1ffEBF123eeaD2Bfef1ea591A3Bab8B2d1d;
+        venueLiaison = 0x25abFBbd1d08Aab70dFa1488d1eB8ED476E2CFea;
+        chaperoneSeat = 0xC93Be8eFDC31dB0aFb74eE8Df2EDE66f60fFfd2A;
+        sponsorDesk = 0xAA4Ebe0beDdC176d8Cb4c12Da3fC517BCB9Ce68B;
+        playlistRelay = 0x7FE4AAE7aEe2D2aaCCc11e503d5f89f0ea72C7Ff;
+        courtScribe = 0xAaAAaA2fBeD6C2Af71D86Dfd09dBEA14CC50Dbc0;
+        budgetClerk = 0xf05e9e5a9e5ceb91Cace26aCB3e3fcED69A3a521;
+        rsvpGate = 0xD1bF5995AfE5becdBBccC506bBBFCacB4aDC13ce;
+        curator = msg.sender;
+        pendingCurator = address(0);
+        deskFrozen = false;
+        deskFrozenAt = 0;
+        nextEventId = 1;
+        _gate = 1;
+    }
+
+    // ---- curator handoff (2-step) ----
+    function queueCurator(address next) external onlyCurator {
+        if (next == address(0)) revert PA_ZeroAddress();
+        pendingCurator = next;
+        emit CuratorQueued(next);
+    }
+
+    function acceptCurator() external {
+        if (msg.sender != pendingCurator) revert PA_NotPendingCurator(msg.sender);
+        if (pendingCurator == address(0)) revert PA_NoPendingCurator();
+        curator = pendingCurator;
+        pendingCurator = address(0);
+        emit CuratorAccepted(curator);
+    }
+
+    function setDeskFrozen(bool frozen) external onlyCurator {
+        deskFrozen = frozen;
+        deskFrozenAt = uint64(block.timestamp);
+        emit DeskFreezeSet(frozen, deskFrozenAt);
+    }
+
+    // ---- event lifecycle ----
+    function openEvent(bytes32 themeSeed, uint64 rsvpWindow) external notFrozen returns (uint256 eventId) {
+        if (rsvpWindow < RSVP_DEADLINE_GRACE) revert PA_RsvpClosed(0);
+        eventId = nextEventId++;
+        uint64 nowTs = uint64(block.timestamp);
+        PromEvent storage ev = events[eventId];
+        ev.host = msg.sender;
+        ev.themeSeed = themeSeed;
+        ev.openedAt = nowTs;
+        ev.rsvpClosesAt = nowTs + rsvpWindow;
+        ev.currentEpoch = 1;
+        ev.epochEndsAt = nowTs + EPOCH_SPAN;
+        ev.hypeScore = HYPE_FLOOR;
+        _seedDefaultTiers(eventId);
+        emit Opened(eventId, msg.sender, themeSeed, nowTs);
+    }
+
+    function sealEvent(uint256 eventId) external eventExists(eventId) {
+        PromEvent storage ev = events[eventId];
+        if (ev.isSealed) revert PA_EventSealed(eventId);
+        if (msg.sender != ev.host && msg.sender != curator) revert PA_NotCurator(msg.sender);
+        ev.isSealed = true;
+        ev.sealedAt = uint64(block.timestamp);
+        emit Sealed(eventId, msg.sender, ev.sealedAt);
+    }
+
+    function _seedDefaultTiers(uint256 eventId) private {
