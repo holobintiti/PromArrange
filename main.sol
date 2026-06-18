@@ -1790,3 +1790,115 @@ contract PromArrange {
         address theme,
         address venue,
         address chaperone,
+        address sponsor,
+        address playlist,
+        address court,
+        address budget,
+        address rsvp
+    ) {
+        return (themeOracle, venueLiaison, chaperoneSeat, sponsorDesk, playlistRelay, courtScribe, budgetClerk, rsvpGate);
+    }
+
+    function anchorTriplet() external pure returns (address a, address b, address c) {
+        return (ADDRESS_A, ADDRESS_B, ADDRESS_C);
+    }
+
+    function promMetric0(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 3 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric1(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 4 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric2(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 5 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric3(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 6 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric4(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 7 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric5(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 8 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric6(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 9 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric7(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 10 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric8(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 11 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric9(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 12 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric10(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 13 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric11(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 14 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric12(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 15 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric13(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 16 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric14(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 17 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric15(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 18 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric16(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 19 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric17(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 20 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric18(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 21 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
+
+    function promMetric19(uint256 eventId) external view returns (uint256 metric) {
+        PromEvent storage ev = events[eventId];
+        metric = uint256(ev.guestCount) * 22 + ev.totalPledgedWei / 1 ether + ev.hypeScore;
+    }
