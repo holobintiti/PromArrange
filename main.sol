@@ -110,3 +110,115 @@ contract PromArrange {
     uint64 public constant DESK_GRACE_BLOCKS = 1440;
     uint256 public constant MAX_BATCH_RSVP = 19;
     uint256 public constant MAX_BATCH_NOMINATE = 11;
+    uint32 public constant HYPE_FLOOR = 143;
+    uint32 public constant HYPE_CEILING = 8773;
+    uint16 public constant DECOR_BUDGET_BPS = 4820;
+    uint16 public constant CATERING_BUDGET_BPS = 3910;
+    uint16 public constant MUSIC_BUDGET_BPS = 2640;
+    uint16 public constant TRANSPORT_BUDGET_BPS = 1180;
+    uint16 public constant MISC_BUDGET_BPS = 450;
+
+    // ---- seat kinds ----
+    uint8 private constant _SEAT_THEME = 1;
+    uint8 private constant _SEAT_VENUE = 2;
+    uint8 private constant _SEAT_CHAPERONE = 3;
+    uint8 private constant _SEAT_SPONSOR = 4;
+    uint8 private constant _SEAT_PLAYLIST = 5;
+    uint8 private constant _SEAT_COURT = 6;
+    uint8 private constant _SEAT_BUDGET = 7;
+    uint8 private constant _SEAT_RSVP = 8;
+
+    // ---- immutables ----
+    address public immutable themeOracle;
+    address public immutable venueLiaison;
+    address public immutable chaperoneSeat;
+    address public immutable sponsorDesk;
+    address public immutable playlistRelay;
+    address public immutable courtScribe;
+    address public immutable budgetClerk;
+    address public immutable rsvpGate;
+
+    // ---- authority ----
+    address public curator;
+    address public pendingCurator;
+    bool public deskFrozen;
+    uint64 public deskFrozenAt;
+
+    // ---- global counters ----
+    uint256 public nextEventId;
+    uint256 private _gate;
+
+    struct PromEvent {
+        address host;
+        bytes32 themeSeed;
+        uint64 openedAt;
+        uint64 rsvpClosesAt;
+        uint64 sealedAt;
+        bool isSealed;
+        uint16 guestCount;
+        uint16 chaperoneCount;
+        uint16 themeOptionCount;
+        uint16 playlistCount;
+        uint16 courtNomineeCount;
+        uint16 sponsorCount;
+        uint16 budgetLineCount;
+        uint32 hypeScore;
+        uint64 currentEpoch;
+        uint64 epochEndsAt;
+        uint256 totalPledgedWei;
+        uint256 totalSpentWei;
+    }
+
+    struct TicketTier {
+        uint256 priceWei;
+        uint16 cap;
+        uint16 sold;
+        bool active;
+        bytes32 tierTag;
+    }
+
+    struct RsvpRecord {
+        uint8 tierId;
+        uint256 paidWei;
+        uint64 rsvpedAt;
+        bool cancelled;
+    }
+
+    struct VenueSlot {
+        string label;
+        uint256 depositWei;
+        address bookedBy;
+        bool taken;
+    }
+
+    struct ThemeOptionEntry {
+        string label;
+        uint32 voteWeight;
+        uint32 totalVotes;
+        bool active;
+    }
+
+    struct PlaylistEntry {
+        address submitter;
+        bytes32 trackHash;
+        uint64 addedAt;
+        bool removed;
+    }
+
+    struct CourtNominee {
+        address nominee;
+        address nominator;
+        uint32 voteTotal;
+        bool withdrawn;
+    }
+
+    struct SponsorPledge {
+        address sponsor;
+        uint256 amountWei;
+        bytes32 memoHash;
+        uint64 pledgedAt;
+    }
+
+    struct BudgetLineEntry {
+        uint8 category;
+        uint256 ceilingWei;
