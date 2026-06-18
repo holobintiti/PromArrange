@@ -1678,3 +1678,115 @@ contract PromArrange {
     }
 
     function tierSnapshot1(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot2(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot3(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot4(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot5(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot6(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot7(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot8(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot9(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot10(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot11(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot12(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot13(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot14(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot15(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot16(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot17(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot18(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot19(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+// ---- misc read lanes ----
+    function eventSummary(uint256 eventId) external view returns (
+        address host,
+        bool sealed,
+        uint16 guests,
+        uint16 chaperonesCount,
+        uint256 pledged,
+        uint256 spent,
+        uint32 hype
+    ) {
+        PromEvent storage ev = events[eventId];
+        return (ev.host, ev.isSealed, ev.guestCount, ev.chaperoneCount, ev.totalPledgedWei, ev.totalSpentWei, ev.hypeScore);
+    }
+
+    function seatAddresses() external view returns (
+        address theme,
+        address venue,
+        address chaperone,
