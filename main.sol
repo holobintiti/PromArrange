@@ -782,3 +782,115 @@ contract PromArrange {
         uint16 count = events[eventId].themeOptionCount;
         for (uint8 i; i < count; ) {
             ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(12)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    function themeLeaderboard13(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(13)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    function themeLeaderboard14(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(14)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    // ---- playlist lane ----
+    function submitPlaylistTrack(uint256 eventId, bytes32 trackHash) external payable nonReentrant eventExists(eventId) eventOpen(eventId) notFrozen {
+        if (msg.sender != playlistRelay && msg.sender != events[eventId].host) revert PA_NotSeat(msg.sender, _SEAT_PLAYLIST);
+        if (msg.value < PLAYLIST_FEE_WEI) revert PA_PledgeLow();
+        PromEvent storage ev = events[eventId];
+        if (ev.playlistCount >= MAX_PLAYLIST_ENTRIES) revert PA_PlaylistCap(eventId);
+        uint256 entryId = ev.playlistCount;
+        ev.playlistCount += 1;
+        playlist[eventId][entryId] = PlaylistEntry({
+            submitter: msg.sender,
+            trackHash: trackHash,
+            addedAt: uint64(block.timestamp),
+            removed: false
+        });
+        emit PlaylistAdded(eventId, entryId, msg.sender, trackHash);
+    }
+
+    function playlistEntryView0(uint256 eventId, uint256 entryId) external view returns (address submitter, bytes32 trackHash, bool removed) {
+        PlaylistEntry storage ent = playlist[eventId][entryId];
+        if (ent.addedAt == 0) revert PA_PlaylistMissing(eventId, entryId);
+        return (ent.submitter, ent.trackHash, ent.removed);
+    }
+
+    function playlistEntryView1(uint256 eventId, uint256 entryId) external view returns (address submitter, bytes32 trackHash, bool removed) {
+        PlaylistEntry storage ent = playlist[eventId][entryId];
+        if (ent.addedAt == 0) revert PA_PlaylistMissing(eventId, entryId);
+        return (ent.submitter, ent.trackHash, ent.removed);
+    }
+
+    function playlistEntryView2(uint256 eventId, uint256 entryId) external view returns (address submitter, bytes32 trackHash, bool removed) {
+        PlaylistEntry storage ent = playlist[eventId][entryId];
+        if (ent.addedAt == 0) revert PA_PlaylistMissing(eventId, entryId);
+        return (ent.submitter, ent.trackHash, ent.removed);
+    }
+
+    function playlistEntryView3(uint256 eventId, uint256 entryId) external view returns (address submitter, bytes32 trackHash, bool removed) {
+        PlaylistEntry storage ent = playlist[eventId][entryId];
+        if (ent.addedAt == 0) revert PA_PlaylistMissing(eventId, entryId);
+        return (ent.submitter, ent.trackHash, ent.removed);
+    }
+
+    function playlistEntryView4(uint256 eventId, uint256 entryId) external view returns (address submitter, bytes32 trackHash, bool removed) {
+        PlaylistEntry storage ent = playlist[eventId][entryId];
+        if (ent.addedAt == 0) revert PA_PlaylistMissing(eventId, entryId);
+        return (ent.submitter, ent.trackHash, ent.removed);
+    }
+
+    function playlistEntryView5(uint256 eventId, uint256 entryId) external view returns (address submitter, bytes32 trackHash, bool removed) {
+        PlaylistEntry storage ent = playlist[eventId][entryId];
+        if (ent.addedAt == 0) revert PA_PlaylistMissing(eventId, entryId);
+        return (ent.submitter, ent.trackHash, ent.removed);
+    }
+
+    function playlistEntryView6(uint256 eventId, uint256 entryId) external view returns (address submitter, bytes32 trackHash, bool removed) {
+        PlaylistEntry storage ent = playlist[eventId][entryId];
+        if (ent.addedAt == 0) revert PA_PlaylistMissing(eventId, entryId);
+        return (ent.submitter, ent.trackHash, ent.removed);
+    }
+
+    function playlistEntryView7(uint256 eventId, uint256 entryId) external view returns (address submitter, bytes32 trackHash, bool removed) {
+        PlaylistEntry storage ent = playlist[eventId][entryId];
+        if (ent.addedAt == 0) revert PA_PlaylistMissing(eventId, entryId);
+        return (ent.submitter, ent.trackHash, ent.removed);
+    }
+
+    function playlistEntryView8(uint256 eventId, uint256 entryId) external view returns (address submitter, bytes32 trackHash, bool removed) {
+        PlaylistEntry storage ent = playlist[eventId][entryId];
+        if (ent.addedAt == 0) revert PA_PlaylistMissing(eventId, entryId);
+        return (ent.submitter, ent.trackHash, ent.removed);
+    }
+
+    function playlistEntryView9(uint256 eventId, uint256 entryId) external view returns (address submitter, bytes32 trackHash, bool removed) {
+        PlaylistEntry storage ent = playlist[eventId][entryId];
+        if (ent.addedAt == 0) revert PA_PlaylistMissing(eventId, entryId);
+        return (ent.submitter, ent.trackHash, ent.removed);
+    }
+
