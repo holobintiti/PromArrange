@@ -558,3 +558,115 @@ contract PromArrange {
         ok = ratioBps >= CHAPERONE_RATIO_BPS - uint256(1);
     }
 
+    function chaperoneRatioCheck2(uint256 eventId) external view returns (bool ok, uint256 ratioBps) {
+        PromEvent storage ev = events[eventId];
+        if (ev.guestCount == 0) return (true, 0);
+        ratioBps = (uint256(ev.chaperoneCount) * 10000) / uint256(ev.guestCount);
+        ok = ratioBps >= CHAPERONE_RATIO_BPS - uint256(2);
+    }
+
+    function chaperoneRatioCheck3(uint256 eventId) external view returns (bool ok, uint256 ratioBps) {
+        PromEvent storage ev = events[eventId];
+        if (ev.guestCount == 0) return (true, 0);
+        ratioBps = (uint256(ev.chaperoneCount) * 10000) / uint256(ev.guestCount);
+        ok = ratioBps >= CHAPERONE_RATIO_BPS - uint256(3);
+    }
+
+    function chaperoneRatioCheck4(uint256 eventId) external view returns (bool ok, uint256 ratioBps) {
+        PromEvent storage ev = events[eventId];
+        if (ev.guestCount == 0) return (true, 0);
+        ratioBps = (uint256(ev.chaperoneCount) * 10000) / uint256(ev.guestCount);
+        ok = ratioBps >= CHAPERONE_RATIO_BPS - uint256(4);
+    }
+
+    function chaperoneRatioCheck5(uint256 eventId) external view returns (bool ok, uint256 ratioBps) {
+        PromEvent storage ev = events[eventId];
+        if (ev.guestCount == 0) return (true, 0);
+        ratioBps = (uint256(ev.chaperoneCount) * 10000) / uint256(ev.guestCount);
+        ok = ratioBps >= CHAPERONE_RATIO_BPS - uint256(5);
+    }
+
+    function chaperoneRatioCheck6(uint256 eventId) external view returns (bool ok, uint256 ratioBps) {
+        PromEvent storage ev = events[eventId];
+        if (ev.guestCount == 0) return (true, 0);
+        ratioBps = (uint256(ev.chaperoneCount) * 10000) / uint256(ev.guestCount);
+        ok = ratioBps >= CHAPERONE_RATIO_BPS - uint256(6);
+    }
+
+    function chaperoneRatioCheck7(uint256 eventId) external view returns (bool ok, uint256 ratioBps) {
+        PromEvent storage ev = events[eventId];
+        if (ev.guestCount == 0) return (true, 0);
+        ratioBps = (uint256(ev.chaperoneCount) * 10000) / uint256(ev.guestCount);
+        ok = ratioBps >= CHAPERONE_RATIO_BPS - uint256(7);
+    }
+
+    // ---- theme voting ----
+    function addThemeOption(uint256 eventId, uint8 optionId, string calldata label) external eventExists(eventId) eventOpen(eventId) notFrozen {
+        if (msg.sender != themeOracle && msg.sender != events[eventId].host) revert PA_NotSeat(msg.sender, _SEAT_THEME);
+        if (optionId >= MAX_THEME_OPTIONS) revert PA_ThemeCap(eventId);
+        ThemeOptionEntry storage opt = themeOptions[eventId][optionId];
+        if (bytes(opt.label).length != 0) revert PA_ThemeCap(eventId);
+        opt.label = label;
+        opt.voteWeight = THEME_VOTE_WEIGHT;
+        opt.active = true;
+        events[eventId].themeOptionCount += 1;
+        emit ThemeOption(eventId, optionId, label, THEME_VOTE_WEIGHT);
+    }
+
+    function voteTheme(uint256 eventId, uint8 optionId) external eventExists(eventId) eventOpen(eventId) notFrozen {
+        ThemeOptionEntry storage opt = themeOptions[eventId][optionId];
+        if (!opt.active || bytes(opt.label).length == 0) revert PA_ThemeMissing(eventId, optionId);
+        if (themeVotes[eventId][msg.sender][optionId]) revert PA_AlreadyRsvp(eventId, msg.sender);
+        themeVotes[eventId][msg.sender][optionId] = true;
+        opt.totalVotes += opt.voteWeight;
+        emit ThemeVoted(eventId, msg.sender, optionId, opt.voteWeight);
+    }
+
+    function themeLeaderboard0(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(0)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    function themeLeaderboard1(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(1)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    function themeLeaderboard2(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(2)) break;
+            unchecked { ++i; }
+        }
+    }
+
+    function themeLeaderboard3(uint256 eventId) external view returns (uint8 leaderId, uint32 votes) {
+        uint16 count = events[eventId].themeOptionCount;
+        for (uint8 i; i < count; ) {
+            ThemeOptionEntry storage opt = themeOptions[eventId][i];
+            if (opt.totalVotes > votes) {
+                votes = opt.totalVotes;
+                leaderId = i;
+            }
+            if (i == uint8(3)) break;
