@@ -1566,3 +1566,115 @@ contract PromArrange {
         RsvpRecord storage rec = rsvps[eventId][guest];
         tierId = rec.tierId;
         paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex17(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex18(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex19(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex20(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex21(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex22(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex23(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex24(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex25(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex26(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex27(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex28(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function guestAtIndex29(uint256 eventId, uint256 index) external view returns (address guest, uint8 tierId, uint256 paidWei) {
+        if (index >= guestList[eventId].length) revert PA_NotRsvp(eventId, address(0));
+        guest = guestList[eventId][index];
+        RsvpRecord storage rec = rsvps[eventId][guest];
+        tierId = rec.tierId;
+        paidWei = rec.paidWei;
+    }
+
+    function tierSnapshot0(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
+        TicketTier storage tier = tiers[eventId][tierId];
+        return (tier.priceWei, tier.cap, tier.sold, tier.active);
+    }
+
+    function tierSnapshot1(uint256 eventId, uint8 tierId) external view returns (uint256 price, uint16 cap, uint16 sold, bool active) {
