@@ -1118,3 +1118,115 @@ contract PromArrange {
 
     function budgetSlice5(uint256 eventId) external view returns (uint256 sliceWei) {
         PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * DECOR_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice6(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * CATERING_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice7(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * MUSIC_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice8(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * TRANSPORT_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice9(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * MISC_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice10(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * DECOR_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice11(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * CATERING_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice12(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * MUSIC_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice13(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * TRANSPORT_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice14(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * MISC_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice15(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * DECOR_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice16(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * CATERING_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice17(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * MUSIC_BUDGET_BPS) / 10000;
+    }
+
+    // ---- epoch & hype ----
+    function rollEpoch(uint256 eventId) external eventExists(eventId) eventOpen(eventId) {
+        PromEvent storage ev = events[eventId];
+        if (block.timestamp < ev.epochEndsAt) revert PA_EpochStale(eventId, ev.currentEpoch);
+        ev.currentEpoch += 1;
+        ev.epochEndsAt = uint64(block.timestamp) + EPOCH_SPAN;
+        emit EpochRolled(eventId, ev.currentEpoch, EPOCH_SPAN);
+    }
+
+    function setHypeScore(uint256 eventId, uint32 hypeScore) external eventExists(eventId) {
+        if (msg.sender != curator && msg.sender != events[eventId].host) revert PA_NotCurator(msg.sender);
+        if (hypeScore < HYPE_FLOOR || hypeScore > HYPE_CEILING) revert PA_HypeRange();
+        events[eventId].hypeScore = hypeScore;
+        emit HypeSet(eventId, hypeScore);
+    }
+
+    function epochSnapshot0(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot1(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot2(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot3(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot4(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot5(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot6(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
