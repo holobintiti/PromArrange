@@ -334,3 +334,115 @@ contract PromArrange {
     }
 
     function _seedDefaultTiers(uint256 eventId) private {
+        tiers[eventId][0] = TicketTier({
+            priceWei: TICKET_BASE_WEI,
+            cap: GENERAL_CAP_DEFAULT,
+            sold: 0,
+            active: true,
+            tierTag: keccak256(abi.encode(DOMAIN_SALT, eventId, uint8(0)))
+        });
+        tiers[eventId][1] = TicketTier({
+            priceWei: TICKET_BASE_WEI * 2,
+            cap: VIP_CAP_DEFAULT,
+            sold: 0,
+            active: true,
+            tierTag: keccak256(abi.encode(DOMAIN_SALT, eventId, uint8(1)))
+        });
+        emit TierSet(eventId, 0, TICKET_BASE_WEI, GENERAL_CAP_DEFAULT, true);
+        emit TierSet(eventId, 1, TICKET_BASE_WEI * 2, VIP_CAP_DEFAULT, true);
+    }
+
+    function configureTier(
+        uint256 eventId,
+        uint8 tierId,
+        uint256 priceWei,
+        uint16 cap,
+        bool active
+    ) external eventExists(eventId) eventOpen(eventId) {
+        PromEvent storage ev = events[eventId];
+        if (msg.sender != ev.host && msg.sender != curator) revert PA_NotCurator(msg.sender);
+        if (tierId >= MAX_TICKET_TIERS) revert PA_TierMissing(eventId, tierId);
+        tiers[eventId][tierId] = TicketTier({
+            priceWei: priceWei,
+            cap: cap,
+            sold: tiers[eventId][tierId].sold,
+            active: active,
+            tierTag: keccak256(abi.encode(DOMAIN_SALT, eventId, tierId))
+        });
+        emit TierSet(eventId, tierId, priceWei, cap, active);
+    }
+
+    function rsvp(uint256 eventId, uint8 tierId) external payable nonReentrant eventExists(eventId) eventOpen(eventId) notFrozen {
+        PromEvent storage ev = events[eventId];
+        if (block.timestamp > ev.rsvpClosesAt) revert PA_RsvpClosed(eventId);
+        if (ev.guestCount >= MAX_GUESTS_PER_EVENT) revert PA_GuestCap(eventId);
+        if (rsvps[eventId][msg.sender].rsvpedAt != 0 && !rsvps[eventId][msg.sender].cancelled) {
+            revert PA_AlreadyRsvp(eventId, msg.sender);
+        }
+        TicketTier storage tier = tiers[eventId][tierId];
+        if (!tier.active) revert PA_TierInactive(eventId, tierId);
+        if (tier.sold >= tier.cap) revert PA_TierSoldOut(eventId, tierId);
+        if (msg.value < tier.priceWei) revert PA_PledgeLow();
+        tier.sold += 1;
+        ev.guestCount += 1;
+        rsvps[eventId][msg.sender] = RsvpRecord({
+            tierId: tierId,
+            paidWei: msg.value,
+            rsvpedAt: uint64(block.timestamp),
+            cancelled: false
+        });
+        guestList[eventId].push(msg.sender);
+        emit Rsvp(eventId, msg.sender, tierId, msg.value);
+    }
+
+    function cancelRsvp(uint256 eventId) external nonReentrant eventExists(eventId) eventOpen(eventId) {
+        RsvpRecord storage rec = rsvps[eventId][msg.sender];
+        if (rec.rsvpedAt == 0 || rec.cancelled) revert PA_NotRsvp(eventId, msg.sender);
+        rec.cancelled = true;
+        PromEvent storage ev = events[eventId];
+        ev.guestCount -= 1;
+        TicketTier storage tier = tiers[eventId][rec.tierId];
+        if (tier.sold > 0) tier.sold -= 1;
+        uint256 refund = rec.paidWei;
+        rec.paidWei = 0;
+        (bool ok, ) = msg.sender.call{value: refund}("");
+        if (!ok) revert PA_TransferFail();
+        emit RsvpCancelled(eventId, msg.sender);
+    }
+
+    function batchRsvp(
+        uint256 eventId,
+        address[] calldata guests,
+        uint8[] calldata tierIds
+    ) external payable nonReentrant eventExists(eventId) eventOpen(eventId) notFrozen {
+        if (msg.sender != rsvpGate && msg.sender != curator) revert PA_NotSeat(msg.sender, _SEAT_RSVP);
+        uint256 len = guests.length;
+        if (len == 0 || len > MAX_BATCH_RSVP) revert PA_BatchTooLarge();
+        if (tierIds.length != len) revert PA_ArrayMismatch();
+        uint256 totalDue;
+        for (uint256 i; i < len; ) {
+            TicketTier storage tier = tiers[eventId][tierIds[i]];
+            if (!tier.active || tier.sold >= tier.cap) revert PA_TierSoldOut(eventId, tierIds[i]);
+            totalDue += tier.priceWei;
+            unchecked { ++i; }
+        }
+        if (msg.value < totalDue) revert PA_PledgeLow();
+        for (uint256 i; i < len; ) {
+            address guest = guests[i];
+            uint8 tierId = tierIds[i];
+            TicketTier storage tier = tiers[eventId][tierId];
+            tier.sold += 1;
+            events[eventId].guestCount += 1;
+            rsvps[eventId][guest] = RsvpRecord({
+                tierId: tierId,
+                paidWei: tier.priceWei,
+                rsvpedAt: uint64(block.timestamp),
+                cancelled: false
+            });
+            guestList[eventId].push(guest);
+            emit Rsvp(eventId, guest, tierId, tier.priceWei);
+            unchecked { ++i; }
+        }
+    }
+
+
