@@ -1230,3 +1230,115 @@ contract PromArrange {
     function epochSnapshot6(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
         PromEvent storage ev = events[eventId];
         return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot7(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot8(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot9(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot10(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot11(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot12(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot13(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot14(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot15(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot16(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot17(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot18(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    function epochSnapshot19(uint256 eventId) external view returns (uint64 epochId, uint64 endsAt, uint32 hype) {
+        PromEvent storage ev = events[eventId];
+        return (ev.currentEpoch, ev.epochEndsAt, ev.hypeScore);
+    }
+
+    // ---- split digest views ----
+    function digestHalfA(uint256 eventId) public view returns (bytes32 hA) {
+        PromEvent storage ev = events[eventId];
+        hA = keccak256(abi.encode(
+            ev.host,
+            ev.themeSeed,
+            ev.openedAt,
+            ev.guestCount,
+            ev.totalPledgedWei,
+            DOMAIN_SALT
+        ));
+    }
+
+    function digestHalfB(uint256 eventId) public view returns (bytes32 hB) {
+        PromEvent storage ev = events[eventId];
+        hB = keccak256(abi.encode(
+            ev.chaperoneCount,
+            ev.hypeScore,
+            ev.currentEpoch,
+            ev.totalSpentWei,
+            THEME_ROOT,
+            COURT_SALT
+        ));
+    }
+
+    function eventDigest(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(digestHalfA(eventId), digestHalfB(eventId)));
+    }
+
+    function assertEventDigest(uint256 eventId, bytes32 supplied) external view {
+        bytes32 computed = keccak256(abi.encodePacked(digestHalfA(eventId), digestHalfB(eventId)));
+        if (supplied != computed) revert PA_DigestMismatch(supplied, computed);
+    }
+
+    function anchorDigest0(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest1(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
+
+    function anchorDigest2(uint256 eventId) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(ADDRESS_A, ADDRESS_B, ADDRESS_C, eventId, uint256({d})));
+    }
