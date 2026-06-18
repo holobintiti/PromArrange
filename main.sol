@@ -446,3 +446,115 @@ contract PromArrange {
     }
 
 
+    // ---- venue booking ----
+    function bookVenueSlot(
+        uint256 eventId,
+        uint8 slotId,
+        string calldata label
+    ) external payable nonReentrant eventExists(eventId) eventOpen(eventId) notFrozen {
+        if (msg.sender != venueLiaison && msg.sender != events[eventId].host) {
+            revert PA_NotSeat(msg.sender, _SEAT_VENUE);
+        }
+        if (slotId >= MAX_VENUE_SLOTS) revert PA_VenueMissing(eventId, slotId);
+        VenueSlot storage slot = venueSlots[eventId][slotId];
+        if (slot.taken) revert PA_VenueTaken(eventId, slotId);
+        slot.label = label;
+        slot.depositWei = msg.value;
+        slot.bookedBy = msg.sender;
+        slot.taken = true;
+        emit VenueBooked(eventId, slotId, label, msg.value);
+    }
+
+    function venueDigestPart0(uint256 eventId, uint8 slotId) external view returns (bytes32) {
+        VenueSlot storage slot = venueSlots[eventId][slotId];
+        return keccak256(abi.encode(VENUE_SEED, eventId, slotId, slot.label, slot.depositWei, uint8(0)));
+    }
+
+    function venueDigestPart1(uint256 eventId, uint8 slotId) external view returns (bytes32) {
+        VenueSlot storage slot = venueSlots[eventId][slotId];
+        return keccak256(abi.encode(VENUE_SEED, eventId, slotId, slot.label, slot.depositWei, uint8(1)));
+    }
+
+    function venueDigestPart2(uint256 eventId, uint8 slotId) external view returns (bytes32) {
+        VenueSlot storage slot = venueSlots[eventId][slotId];
+        return keccak256(abi.encode(VENUE_SEED, eventId, slotId, slot.label, slot.depositWei, uint8(2)));
+    }
+
+    function venueDigestPart3(uint256 eventId, uint8 slotId) external view returns (bytes32) {
+        VenueSlot storage slot = venueSlots[eventId][slotId];
+        return keccak256(abi.encode(VENUE_SEED, eventId, slotId, slot.label, slot.depositWei, uint8(3)));
+    }
+
+    function venueDigestPart4(uint256 eventId, uint8 slotId) external view returns (bytes32) {
+        VenueSlot storage slot = venueSlots[eventId][slotId];
+        return keccak256(abi.encode(VENUE_SEED, eventId, slotId, slot.label, slot.depositWei, uint8(4)));
+    }
+
+    function venueDigestPart5(uint256 eventId, uint8 slotId) external view returns (bytes32) {
+        VenueSlot storage slot = venueSlots[eventId][slotId];
+        return keccak256(abi.encode(VENUE_SEED, eventId, slotId, slot.label, slot.depositWei, uint8(5)));
+    }
+
+    function venueDigestPart6(uint256 eventId, uint8 slotId) external view returns (bytes32) {
+        VenueSlot storage slot = venueSlots[eventId][slotId];
+        return keccak256(abi.encode(VENUE_SEED, eventId, slotId, slot.label, slot.depositWei, uint8(6)));
+    }
+
+    function venueDigestPart7(uint256 eventId, uint8 slotId) external view returns (bytes32) {
+        VenueSlot storage slot = venueSlots[eventId][slotId];
+        return keccak256(abi.encode(VENUE_SEED, eventId, slotId, slot.label, slot.depositWei, uint8(7)));
+    }
+
+    function venueDigestPart8(uint256 eventId, uint8 slotId) external view returns (bytes32) {
+        VenueSlot storage slot = venueSlots[eventId][slotId];
+        return keccak256(abi.encode(VENUE_SEED, eventId, slotId, slot.label, slot.depositWei, uint8(8)));
+    }
+
+    function venueDigestPart9(uint256 eventId, uint8 slotId) external view returns (bytes32) {
+        VenueSlot storage slot = venueSlots[eventId][slotId];
+        return keccak256(abi.encode(VENUE_SEED, eventId, slotId, slot.label, slot.depositWei, uint8(9)));
+    }
+
+    function venueDigestPart10(uint256 eventId, uint8 slotId) external view returns (bytes32) {
+        VenueSlot storage slot = venueSlots[eventId][slotId];
+        return keccak256(abi.encode(VENUE_SEED, eventId, slotId, slot.label, slot.depositWei, uint8(10)));
+    }
+
+    function venueDigestPart11(uint256 eventId, uint8 slotId) external view returns (bytes32) {
+        VenueSlot storage slot = venueSlots[eventId][slotId];
+        return keccak256(abi.encode(VENUE_SEED, eventId, slotId, slot.label, slot.depositWei, uint8(11)));
+    }
+
+    // ---- chaperone roster ----
+    function joinChaperone(uint256 eventId) external eventExists(eventId) eventOpen(eventId) notFrozen {
+        if (msg.sender != chaperoneSeat && msg.sender != curator) revert PA_NotSeat(msg.sender, _SEAT_CHAPERONE);
+        PromEvent storage ev = events[eventId];
+        if (ev.chaperoneCount >= MAX_CHAPERONE_SLOTS) revert PA_ChaperoneFull(eventId);
+        if (isChaperone[eventId][msg.sender]) revert PA_AlreadyChaperone(eventId, msg.sender);
+        isChaperone[eventId][msg.sender] = true;
+        chaperones[eventId].push(msg.sender);
+        ev.chaperoneCount += 1;
+        emit ChaperoneJoined(eventId, msg.sender);
+    }
+
+    function leaveChaperone(uint256 eventId) external eventExists(eventId) {
+        if (!isChaperone[eventId][msg.sender]) revert PA_ChaperoneMissing(eventId, msg.sender);
+        isChaperone[eventId][msg.sender] = false;
+        events[eventId].chaperoneCount -= 1;
+        emit ChaperoneLeft(eventId, msg.sender);
+    }
+
+    function chaperoneRatioCheck0(uint256 eventId) external view returns (bool ok, uint256 ratioBps) {
+        PromEvent storage ev = events[eventId];
+        if (ev.guestCount == 0) return (true, 0);
+        ratioBps = (uint256(ev.chaperoneCount) * 10000) / uint256(ev.guestCount);
+        ok = ratioBps >= CHAPERONE_RATIO_BPS - uint256(0);
+    }
+
+    function chaperoneRatioCheck1(uint256 eventId) external view returns (bool ok, uint256 ratioBps) {
+        PromEvent storage ev = events[eventId];
+        if (ev.guestCount == 0) return (true, 0);
+        ratioBps = (uint256(ev.chaperoneCount) * 10000) / uint256(ev.guestCount);
+        ok = ratioBps >= CHAPERONE_RATIO_BPS - uint256(1);
+    }
+
