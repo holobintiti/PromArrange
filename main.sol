@@ -1006,3 +1006,115 @@ contract PromArrange {
         CourtNominee storage nom = courtNominees[eventId][nomineeId];
         if (nom.nominee == address(0)) revert PA_CourtMissing(eventId, nomineeId);
         return (nom.nominee, nom.voteTotal, nom.withdrawn);
+    }
+
+    function courtStanding6(uint256 eventId, uint256 nomineeId) external view returns (address nominee, uint32 votes, bool withdrawn) {
+        CourtNominee storage nom = courtNominees[eventId][nomineeId];
+        if (nom.nominee == address(0)) revert PA_CourtMissing(eventId, nomineeId);
+        return (nom.nominee, nom.voteTotal, nom.withdrawn);
+    }
+
+    function courtStanding7(uint256 eventId, uint256 nomineeId) external view returns (address nominee, uint32 votes, bool withdrawn) {
+        CourtNominee storage nom = courtNominees[eventId][nomineeId];
+        if (nom.nominee == address(0)) revert PA_CourtMissing(eventId, nomineeId);
+        return (nom.nominee, nom.voteTotal, nom.withdrawn);
+    }
+
+    function courtStanding8(uint256 eventId, uint256 nomineeId) external view returns (address nominee, uint32 votes, bool withdrawn) {
+        CourtNominee storage nom = courtNominees[eventId][nomineeId];
+        if (nom.nominee == address(0)) revert PA_CourtMissing(eventId, nomineeId);
+        return (nom.nominee, nom.voteTotal, nom.withdrawn);
+    }
+
+    function courtStanding9(uint256 eventId, uint256 nomineeId) external view returns (address nominee, uint32 votes, bool withdrawn) {
+        CourtNominee storage nom = courtNominees[eventId][nomineeId];
+        if (nom.nominee == address(0)) revert PA_CourtMissing(eventId, nomineeId);
+        return (nom.nominee, nom.voteTotal, nom.withdrawn);
+    }
+
+    function courtStanding10(uint256 eventId, uint256 nomineeId) external view returns (address nominee, uint32 votes, bool withdrawn) {
+        CourtNominee storage nom = courtNominees[eventId][nomineeId];
+        if (nom.nominee == address(0)) revert PA_CourtMissing(eventId, nomineeId);
+        return (nom.nominee, nom.voteTotal, nom.withdrawn);
+    }
+
+    function courtStanding11(uint256 eventId, uint256 nomineeId) external view returns (address nominee, uint32 votes, bool withdrawn) {
+        CourtNominee storage nom = courtNominees[eventId][nomineeId];
+        if (nom.nominee == address(0)) revert PA_CourtMissing(eventId, nomineeId);
+        return (nom.nominee, nom.voteTotal, nom.withdrawn);
+    }
+
+    // ---- sponsors & budget ----
+    function pledgeSponsor(uint256 eventId, bytes32 memoHash) external payable nonReentrant eventExists(eventId) eventOpen(eventId) notFrozen {
+        if (msg.sender != sponsorDesk && msg.sender != events[eventId].host) revert PA_NotSeat(msg.sender, _SEAT_SPONSOR);
+        if (msg.value < MIN_PLEDGE_WEI) revert PA_PledgeLow();
+        if (msg.value > MAX_PLEDGE_WEI) revert PA_PledgeHigh();
+        PromEvent storage ev = events[eventId];
+        if (ev.sponsorCount >= MAX_SPONSOR_PLEDGES) revert PA_SponsorCap(eventId);
+        uint256 pledgeId = ev.sponsorCount;
+        ev.sponsorCount += 1;
+        ev.totalPledgedWei += msg.value;
+        sponsorPledges[eventId][pledgeId] = SponsorPledge({
+            sponsor: msg.sender,
+            amountWei: msg.value,
+            memoHash: memoHash,
+            pledgedAt: uint64(block.timestamp)
+        });
+        emit SponsorPledged(eventId, msg.sender, msg.value, memoHash);
+    }
+
+    function addBudgetLine(uint256 eventId, uint256 lineId, uint8 category, uint256 ceilingWei) external eventExists(eventId) eventOpen(eventId) notFrozen {
+        if (msg.sender != budgetClerk && msg.sender != events[eventId].host) revert PA_NotSeat(msg.sender, _SEAT_BUDGET);
+        if (ceilingWei > BUDGET_LINE_CAP) revert PA_BudgetOverrun(eventId, lineId);
+        PromEvent storage ev = events[eventId];
+        if (ev.budgetLineCount >= MAX_BUDGET_LINES) revert PA_BudgetCap(eventId);
+        BudgetLineEntry storage line = budgetLines[eventId][lineId];
+        if (line.ceilingWei != 0) revert PA_BudgetCap(eventId);
+        ev.budgetLineCount += 1;
+        line.category = category;
+        line.ceilingWei = ceilingWei;
+        line.spentWei = 0;
+        line.closed = false;
+        emit BudgetLine(eventId, lineId, category, ceilingWei);
+    }
+
+    function spendBudgetLine(uint256 eventId, uint256 lineId, uint256 amountWei, address spender) external nonReentrant eventExists(eventId) notFrozen {
+        if (msg.sender != budgetClerk && msg.sender != curator) revert PA_NotSeat(msg.sender, _SEAT_BUDGET);
+        BudgetLineEntry storage line = budgetLines[eventId][lineId];
+        if (line.ceilingWei == 0) revert PA_BudgetLineMissing(eventId, lineId);
+        if (line.closed) revert PA_BudgetOverrun(eventId, lineId);
+        if (line.spentWei + amountWei > line.ceilingWei) revert PA_BudgetOverrun(eventId, lineId);
+        line.spentWei += amountWei;
+        events[eventId].totalSpentWei += amountWei;
+        (bool ok, ) = spender.call{value: amountWei}("");
+        if (!ok) revert PA_TransferFail();
+        emit BudgetSpent(eventId, lineId, amountWei, spender);
+    }
+
+    function budgetSlice0(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * DECOR_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice1(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * CATERING_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice2(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * MUSIC_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice3(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * TRANSPORT_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice4(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
+        sliceWei = (ev.totalPledgedWei * MISC_BUDGET_BPS) / 10000;
+    }
+
+    function budgetSlice5(uint256 eventId) external view returns (uint256 sliceWei) {
+        PromEvent storage ev = events[eventId];
