@@ -894,3 +894,115 @@ contract PromArrange {
         return (ent.submitter, ent.trackHash, ent.removed);
     }
 
+    function playlistEntryView10(uint256 eventId, uint256 entryId) external view returns (address submitter, bytes32 trackHash, bool removed) {
+        PlaylistEntry storage ent = playlist[eventId][entryId];
+        if (ent.addedAt == 0) revert PA_PlaylistMissing(eventId, entryId);
+        return (ent.submitter, ent.trackHash, ent.removed);
+    }
+
+    function playlistEntryView11(uint256 eventId, uint256 entryId) external view returns (address submitter, bytes32 trackHash, bool removed) {
+        PlaylistEntry storage ent = playlist[eventId][entryId];
+        if (ent.addedAt == 0) revert PA_PlaylistMissing(eventId, entryId);
+        return (ent.submitter, ent.trackHash, ent.removed);
+    }
+
+    function playlistEntryView12(uint256 eventId, uint256 entryId) external view returns (address submitter, bytes32 trackHash, bool removed) {
+        PlaylistEntry storage ent = playlist[eventId][entryId];
+        if (ent.addedAt == 0) revert PA_PlaylistMissing(eventId, entryId);
+        return (ent.submitter, ent.trackHash, ent.removed);
+    }
+
+    function playlistEntryView13(uint256 eventId, uint256 entryId) external view returns (address submitter, bytes32 trackHash, bool removed) {
+        PlaylistEntry storage ent = playlist[eventId][entryId];
+        if (ent.addedAt == 0) revert PA_PlaylistMissing(eventId, entryId);
+        return (ent.submitter, ent.trackHash, ent.removed);
+    }
+
+    // ---- prom court ----
+    function nominateCourt(uint256 eventId, address nominee) external eventExists(eventId) eventOpen(eventId) notFrozen {
+        if (msg.sender != courtScribe && msg.sender != events[eventId].host) revert PA_NotSeat(msg.sender, _SEAT_COURT);
+        if (nominee == address(0)) revert PA_ZeroAddress();
+        if (nomineeIdByAddress[eventId][nominee] != 0) revert PA_AlreadyNominated(eventId, nominee);
+        PromEvent storage ev = events[eventId];
+        if (ev.courtNomineeCount >= MAX_COURT_NOMINEES) revert PA_CourtCap(eventId);
+        uint256 nomineeId = ev.courtNomineeCount + 1;
+        ev.courtNomineeCount += 1;
+        courtNominees[eventId][nomineeId] = CourtNominee({
+            nominee: nominee,
+            nominator: msg.sender,
+            voteTotal: 0,
+            withdrawn: false
+        });
+        nomineeIdByAddress[eventId][nominee] = nomineeId;
+        emit CourtNominated(eventId, nomineeId, nominee, msg.sender);
+    }
+
+    function voteCourt(uint256 eventId, uint256 nomineeId) external payable nonReentrant eventExists(eventId) eventOpen(eventId) notFrozen {
+        CourtNominee storage nom = courtNominees[eventId][nomineeId];
+        if (nom.nominee == address(0) || nom.withdrawn) revert PA_CourtMissing(eventId, nomineeId);
+        if (courtVotes[eventId][nomineeId][msg.sender]) revert PA_AlreadyRsvp(eventId, msg.sender);
+        if (msg.value < COURT_VOTE_COST) revert PA_PledgeLow();
+        courtVotes[eventId][nomineeId][msg.sender] = true;
+        uint32 weight = uint32(1 + (msg.value / COURT_VOTE_COST));
+        nom.voteTotal += weight;
+        emit CourtVoted(eventId, nomineeId, msg.sender, weight);
+    }
+
+    function batchNominateCourt(uint256 eventId, address[] calldata nominees) external eventExists(eventId) eventOpen(eventId) notFrozen {
+        if (msg.sender != courtScribe) revert PA_NotSeat(msg.sender, _SEAT_COURT);
+        uint256 len = nominees.length;
+        if (len == 0 || len > MAX_BATCH_NOMINATE) revert PA_BatchTooLarge();
+        for (uint256 i; i < len; ) {
+            address nominee = nominees[i];
+            if (nominee == address(0)) revert PA_ZeroAddress();
+            if (nomineeIdByAddress[eventId][nominee] != 0) revert PA_AlreadyNominated(eventId, nominee);
+            PromEvent storage ev = events[eventId];
+            if (ev.courtNomineeCount >= MAX_COURT_NOMINEES) revert PA_CourtCap(eventId);
+            uint256 nomineeId = ev.courtNomineeCount + 1;
+            ev.courtNomineeCount += 1;
+            courtNominees[eventId][nomineeId] = CourtNominee({
+                nominee: nominee,
+                nominator: msg.sender,
+                voteTotal: 0,
+                withdrawn: false
+            });
+            nomineeIdByAddress[eventId][nominee] = nomineeId;
+            emit CourtNominated(eventId, nomineeId, nominee, msg.sender);
+            unchecked { ++i; }
+        }
+    }
+
+    function courtStanding0(uint256 eventId, uint256 nomineeId) external view returns (address nominee, uint32 votes, bool withdrawn) {
+        CourtNominee storage nom = courtNominees[eventId][nomineeId];
+        if (nom.nominee == address(0)) revert PA_CourtMissing(eventId, nomineeId);
+        return (nom.nominee, nom.voteTotal, nom.withdrawn);
+    }
+
+    function courtStanding1(uint256 eventId, uint256 nomineeId) external view returns (address nominee, uint32 votes, bool withdrawn) {
+        CourtNominee storage nom = courtNominees[eventId][nomineeId];
+        if (nom.nominee == address(0)) revert PA_CourtMissing(eventId, nomineeId);
+        return (nom.nominee, nom.voteTotal, nom.withdrawn);
+    }
+
+    function courtStanding2(uint256 eventId, uint256 nomineeId) external view returns (address nominee, uint32 votes, bool withdrawn) {
+        CourtNominee storage nom = courtNominees[eventId][nomineeId];
+        if (nom.nominee == address(0)) revert PA_CourtMissing(eventId, nomineeId);
+        return (nom.nominee, nom.voteTotal, nom.withdrawn);
+    }
+
+    function courtStanding3(uint256 eventId, uint256 nomineeId) external view returns (address nominee, uint32 votes, bool withdrawn) {
+        CourtNominee storage nom = courtNominees[eventId][nomineeId];
+        if (nom.nominee == address(0)) revert PA_CourtMissing(eventId, nomineeId);
+        return (nom.nominee, nom.voteTotal, nom.withdrawn);
+    }
+
+    function courtStanding4(uint256 eventId, uint256 nomineeId) external view returns (address nominee, uint32 votes, bool withdrawn) {
+        CourtNominee storage nom = courtNominees[eventId][nomineeId];
+        if (nom.nominee == address(0)) revert PA_CourtMissing(eventId, nomineeId);
+        return (nom.nominee, nom.voteTotal, nom.withdrawn);
+    }
+
+    function courtStanding5(uint256 eventId, uint256 nomineeId) external view returns (address nominee, uint32 votes, bool withdrawn) {
+        CourtNominee storage nom = courtNominees[eventId][nomineeId];
+        if (nom.nominee == address(0)) revert PA_CourtMissing(eventId, nomineeId);
+        return (nom.nominee, nom.voteTotal, nom.withdrawn);
